@@ -11,7 +11,7 @@ public class Lecture extends BaseEntity {
 
     @Column(name = "LECTURE_ID")
     @Id @GeneratedValue
-    private Long id;
+    private Long id;//
 
     private String lectureTitle;
 
