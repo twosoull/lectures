@@ -1,6 +1,7 @@
 package io.lectures.user.entity;
 
 import io.lectures.entity.BaseEntity;
+import io.lectures.lecture.entity.LectureApplicant;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -22,4 +23,9 @@ public class Users extends BaseEntity {
     @OneToOne(mappedBy = "users")
     @JoinColumn(name = "USER_ID")
     private LectureApplicant lectureApplicant;
+
+    public Users(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 }
