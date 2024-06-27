@@ -1,7 +1,10 @@
-package io.lectures.lecture.repository;
+package io.lectures.repository;
 
-import io.lectures.lecture.entity.LectureApplicant;
+import io.lectures.dto.ResponseLectureApplicantDto;
+import io.lectures.entity.LectureApplicant;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public interface LectureApplicantRepository {
@@ -12,5 +15,6 @@ public interface LectureApplicantRepository {
 
     LectureApplicant save(LectureApplicant lectureApplicant);
 
+    List<LectureApplicant> findByUserId(Long userId);
 
 }

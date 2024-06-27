@@ -1,6 +1,6 @@
-package io.lectures.user.repository;
+package io.lectures.repository;
 
-import io.lectures.user.entity.Users;
+import io.lectures.entity.Users;
 import org.springframework.stereotype.Repository;
 
 @Repository

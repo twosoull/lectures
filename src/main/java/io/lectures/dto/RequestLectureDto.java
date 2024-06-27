@@ -1,4 +1,4 @@
-package io.lectures.lecture.dto;
+package io.lectures.dto;
 
 import lombok.Getter;
 import lombok.Setter;

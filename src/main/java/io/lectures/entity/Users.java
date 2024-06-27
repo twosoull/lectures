@@ -1,10 +1,9 @@
-package io.lectures.user.entity;
+package io.lectures.entity;
 
-import io.lectures.entity.BaseEntity;
-import io.lectures.lecture.entity.LectureApplicant;
+import io.lectures.service.LectureService;
 import jakarta.persistence.*;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -18,11 +17,10 @@ public class Users extends BaseEntity {
     private String name;
 
     @OneToMany(mappedBy = "users")
-    private List<UserLectureHistory> userLectureHistories;
+    private List<LectureApplicant> lectureApplicants;
 
-    @OneToOne(mappedBy = "users")
-    @JoinColumn(name = "USER_ID")
-    private LectureApplicant lectureApplicant;
+    public Users() {
+    }
 
     public Users(Long id, String name) {
         this.id = id;

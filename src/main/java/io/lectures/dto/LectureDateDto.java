@@ -1,8 +1,6 @@
-package io.lectures.lecture.dto;
+package io.lectures.dto;
 
-import io.lectures.lecture.entity.Lecture;
-import io.lectures.lecture.entity.LectureDate;
-import jakarta.persistence.*;
+import io.lectures.entity.LectureDate;
 import lombok.Data;
 
 import java.time.LocalDate;

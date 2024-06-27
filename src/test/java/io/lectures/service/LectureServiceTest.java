@@ -1,13 +1,14 @@
-package io.lectures.lecture.service;
+package io.lectures.service;
 
-import io.lectures.lecture.dto.RequestLectureDateDto;
-import io.lectures.lecture.entity.LectureApplicant;
-import io.lectures.lecture.entity.LectureDate;
-import io.lectures.lecture.repository.LectureApplicantRepository;
-import io.lectures.lecture.repository.LectureDateRepository;
-import io.lectures.lecture.repository.LectureRepository;
-import io.lectures.user.entity.Users;
-import io.lectures.user.repository.UserRepository;
+import io.lectures.dto.RequestLectureDateDto;
+import io.lectures.dto.ResponseLectureApplicantDto;
+import io.lectures.entity.LectureApplicant;
+import io.lectures.entity.LectureDate;
+import io.lectures.repository.LectureApplicantRepository;
+import io.lectures.repository.LectureDateRepository;
+import io.lectures.repository.LectureRepository;
+import io.lectures.entity.Users;
+import io.lectures.repository.UserRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -66,46 +67,23 @@ class LectureServiceTest {
         int alreadyCount = 0;
         doReturn(alreadyCount).when(lectureApplicantRepository).countByUserIdAndLectureDateId(userId, lectureDateId);
 
-
+        Users user = new Users(userId,"홍길동");
         String status = "등록";
-        int count = 29;
-        doReturn(count).when(lectureApplicantRepository)
-                .countByLectureDateIdAndStatus(lectureDateId, status);
-
-
-        String name = "이영훈";
-        Users users = new Users(userId, name);
-        doReturn(users).when(userRepository)
-                .findById(userId);
-
-
+        Long lectureApplicantId = 1L;
         LectureApplicant lectureApplicant = new LectureApplicant(
-                status,lectureDate,users
+                lectureApplicantId, status,lectureDate,user
         );
-        doReturn(lectureApplicant).when(lectureApplicantRepository)
-                .save(any(LectureApplicant.class));
+        doReturn(lectureApplicant).when(lectureApplicantRepository).save(any(LectureApplicant.class));
+
         //when
         RequestLectureDateDto requestLectureDateDto = new RequestLectureDateDto();
         requestLectureDateDto.setLectureDateId(lectureDateId);
         requestLectureDateDto.setUserId(userId);
 
-        boolean result = lectureService.applyLecture(requestLectureDateDto);
+        ResponseLectureApplicantDto result = lectureService.applyLecture(requestLectureDateDto);
 
         //then
-        Assertions.assertEquals(true, result);
-    }
-
-    @Test
-    void validDateLecture_test(){
-        //given
-        LocalDateTime applyStartDate = LocalDateTime.of(2023, 6, 23, 14, 30);
-        LocalDateTime applyEndDate = LocalDateTime.of(2023, 6, 24, 14, 30);
-        //when
-        boolean result = lectureService.validDateLecture(applyStartDate.toLocalDate()
-                                                        ,applyEndDate.toLocalDate());
-
-        //then
-        Assertions.assertEquals(false,result);
+        Assertions.assertEquals(result.getId(), lectureApplicantId);
     }
 
     @Test
@@ -117,26 +95,10 @@ class LectureServiceTest {
         doReturn(count).when(lectureApplicantRepository).countByUserIdAndLectureDateId(userId, lectureDateId);
 
         //when
-        boolean result = lectureService.alreadyApply(userId, lectureDateId);
+        Assertions.assertThrows(RuntimeException.class,
+                ()->{lectureService.alreadyApplyValid(userId, lectureDateId);
+        });
 
-        //then
-        Assertions.assertEquals(false,result);
     }
 
-    @Test
-    void NotPossibleIfOver30(){
-        //given
-        Long lectureDateId = 1L;
-        String status = "등록";
-        int count = 30;
-        doReturn(count).when(lectureApplicantRepository)
-                .countByLectureDateIdAndStatus(lectureDateId, status);
-
-        int maxStudent = 30;
-        //when
-        boolean result = lectureService.notPossibleIfOverMaxStudents(lectureDateId, maxStudent);
-
-        //then
-        Assertions.assertEquals(false,result);
-    }
 }

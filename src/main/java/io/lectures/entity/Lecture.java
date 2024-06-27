@@ -1,14 +1,9 @@
-package io.lectures.lecture.entity;
+package io.lectures.entity;
 
-import io.lectures.entity.BaseEntity;
-import io.lectures.user.entity.UserLectureHistory;
 import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -22,12 +17,13 @@ public class Lecture extends BaseEntity {
     private String lectureTitle;
 
     @OneToMany(mappedBy = "lecture")
-    private List<LectureDate> lectureDates;
-
-    @OneToMany(mappedBy = "lecture")
-    private List<UserLectureHistory> userLectureHistories;
+    private List<LectureDate> lectureDates = new ArrayList<>();
 
     public Lecture() {
+    }
+
+    public Lecture(String lectureTitle) {
+        this.lectureTitle = lectureTitle;
     }
 
     public Lecture(Long id, String lectureTitle) {
@@ -35,4 +31,8 @@ public class Lecture extends BaseEntity {
         this.lectureTitle = lectureTitle;
     }
 
+    public void addLectureDates(LectureDate lectureDate) {
+        this.lectureDates.add(lectureDate);
+        lectureDate.addLecture(this);
+    }
 }
